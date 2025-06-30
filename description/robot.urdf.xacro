@@ -1,7 +1,37 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="robot">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="my_robot">
 
-    <!-- Example link -->
-    <link name="base_link"></link>
+  <!-- Xacro Properties -->
+  <xacro:property name="mesh_file" value="package://ROS2LAUNCH/description/meshes/ATV.DAE">
+  <xacro:property name="mesh_scale" value="1 1 1"/>
+  <xacro:property name="collision_box_size" value="0.4 0.3 0.2"/>
+  <xacro:property name="mass_kg" value="5.0"/>
+  <xacro:property name="ixx" value="0.2"/>
+  <xacro:property name="iyy" value="0.2"/>
+  <xacro:property name="izz" value="0.2"/>
+
+  <!-- Robot Base Link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="${mesh_file}" scale="${mesh_scale}"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="${collision_box_size}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="${mass_kg}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia 
+        ixx="${ixx}" ixy="0.0" ixz="0.0"
+        iyy="${iyy}" iyz="0.0" 
+        izz="${izz}"/>
+    </inertial>
+  </link>
 
 </robot>
