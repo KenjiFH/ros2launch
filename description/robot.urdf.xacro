@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="my_robot">
 
   <!-- Xacro Properties -->
-  <xacro:property name="mesh_file" value="/home/kenjif/ros2_ws2/install/my_bot/share/my_bot/description/meshes/ATV.DAE"/>
+  <xacro:property name="mesh_file" value="/home/kenjif/ros2_ws2/src/ros2launch/description/meshes/ATV.DAE"/>
   <xacro:property name="mesh_scale" value="1 1 1"/>
   <xacro:property name="collision_box_size" value="0.4 0.3 0.2"/>
   <xacro:property name="mass_kg" value="5.0"/>
