@@ -34,4 +34,17 @@
     </inertial>
   </link>
 
+  <!-- Add a world link to anchor the robot -->
+  <link name="world"/>
+
+  <!-- Fixed joint from world to base_link -->
+  <joint name="base_fixed_joint" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
 </robot>
+
+
+
