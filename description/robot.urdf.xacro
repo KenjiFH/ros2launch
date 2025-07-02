@@ -33,7 +33,35 @@
         izz="${izz}"/>
     </inertial>
   </link>
+          
 
+
+    <!-- Camera Link -->
+<link name="camera_link">
+  <visual>
+    <geometry>
+      <box size="0.04 0.04 0.03"/>
+    </geometry>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <material name="green"><color rgba="0 1 0 1"/></material>
+  </visual>
+</link>
+
+<!-- Joint to attach Camera to base_link -->
+<joint name="camera_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="camera_link"/>
+  <origin xyz="0.1 0 0.2" rpy="0 0 0"/>
+</joint>
+
+   
+
+
+
+
+  
+
+  <!--REMOVE WHEN USING SLAM/NAVIGATION-->
   <!-- Add a world link to anchor the robot -->
   <link name="world"/>
 
