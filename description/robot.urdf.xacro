@@ -10,7 +10,8 @@
   <xacro:property name="iyy" value="0.2"/>
   <xacro:property name="izz" value="0.2"/>
 
-
+  <xacro:property name="wheel_radius" value="0.1"/>
+  <xacro:property name="wheel_width" value="0.05"/>
 
 
   <link name="base_link">
