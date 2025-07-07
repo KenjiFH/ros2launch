@@ -41,57 +41,58 @@
 
 
   <!-- Camera -->
-  <link name="camera_link">
-    <visual>
-      <geometry>
-        <box size="0.05 0.05 0.05"/>
-      </geometry>
-      <material name="blue">
-        <color rgba="0.1 0.1 1 1"/>
-      </material>
-    </visual>
-  </link>
+  <!-- Camera Link -->
+<link name="camera_link">
+  <visual>
+    <geometry>
+      <box size="0.05 0.05 0.05"/>
+    </geometry>
+    <material name="blue">
+      <color rgba="0.1 0.1 1 1"/>
+    </material>
+  </visual>
+</link>
 
-  <joint name="camera_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="camera_link"/>
-    <origin xyz="0.3 0 0.1" rpy="0 0 0"/>
-  </joint>
+<!-- Camera Mount Joint -->
+<joint name="camera_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="camera_link"/>
+  <origin xyz="0.3 0 0.1" rpy="0 0 0"/>
+</joint>
 
-  <link name="camera_link_optical"/>
-  <joint name="camera_optical_joint" type="fixed">
-    <parent link="camera_link"/>
-    <child link="camera_link_optical"/>
-    <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
-  </joint>
+<!-- Optical Link (standard for camera frames) -->
+<link name="camera_link_optical"/>
+<joint name="camera_optical_joint" type="fixed">
+  <parent link="camera_link"/>
+  <child link="camera_link_optical"/>
+  <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+</joint>
 
-
-  <gazebo reference="camera_link">
-        <material>Gazebo/Red</material>
-
-        <sensor name="camera" type="depth">
-            <pose> 0 0 0 0 0 0 </pose>
-            <visualize>true</visualize>
-            <update_rate>10</update_rate>
-            <camera>
-                <horizontal_fov>1.089</horizontal_fov>
-                <image>
-                    <format>B8G8R8</format>
-                    <width>640</width>
-                    <height>480</height>
-                </image>
-                <clip>
-                    <near>0.05</near>
-                    <far>8.0</far>
-                </clip>
-            </camera>
-            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-                <frame_name>camera_link_optical</frame_name>
-                <min_depth>0.1</min_depth>
-                <max_depth>100.0</max_depth>
-            </plugin>
-        </sensor>
-    </gazebo>
+<!-- Gazebo Harmonic Camera Sensor -->
+<gazebo reference="camera_link">
+  <sensor name="depth_camera" type="camera">
+    <camera>
+      <horizontal_fov>1.089</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.1</near>
+        <far>10.0</far>
+      </clip>
+    </camera>
+    <plugin name="camera_controller" filename="libgz_ros_camera_system.so">
+      <ros>
+        <namespace>/camera</namespace>
+        <remapping>image_raw:=image_raw</remapping>
+      </ros>
+      <camera_name>camera</camera_name>
+      <frame_name>camera_link_optical</frame_name>
+    </plugin>
+  </sensor>
+</gazebo>
 
    
 
