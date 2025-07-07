@@ -37,31 +37,8 @@
     </inertial>
   </link>
           
+  
 
-    <!-- Four Wheels -->
-  <xacro:macro name="wheel" params="name x y">
-    <link name="${name}">
-      <visual>
-        <geometry>
-          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
-        </geometry>
-        <origin xyz="0 0 0" rpy="0 1.5708 0"/>
-        <material name="black">
-          <color rgba="0.1 0.1 0.1 1"/>
-        </material>
-      </visual>
-    </link>
-    <joint name="${name}_joint" type="fixed">
-      <parent link="base_link"/>
-      <child link="${name}"/>
-      <origin xyz="${x} ${y} -${wheel_radius}" rpy="0 0 0"/>
-    </joint>
-  </xacro:macro>
-
-  <xacro:wheel name="front_left_wheel"  x="0.2"  y="0.15"/>
-  <xacro:wheel name="front_right_wheel" x="0.2"  y="-0.15"/>
-  <xacro:wheel name="rear_left_wheel"   x="-0.2" y="0.15"/>
-  <xacro:wheel name="rear_right_wheel"  x="-0.2" y="-0.15"/>
 
   <!-- Camera -->
   <link name="camera_link">
