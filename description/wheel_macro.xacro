@@ -1,38 +1,32 @@
-<!-- wheel_macro.xacro -->
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-
-
-  <!-- Parameters: name, position, and mesh path -->
-  <xacro:macro name="add_wheel" params="wheel_name xyz rpy mesh">
-    <link name="${wheel_name}_link">
-      <visual>
-        <origin xyz="${xyz}" rpy="${rpy}"/>
-        <geometry>
-          <mesh filename="${mesh}" scale="1 1 1"/>
-        </geometry>
-      </visual>
-      <collision>
-        <origin xyz="${xyz}" rpy="${rpy}"/>
-        <geometry>
-          <cylinder radius="0.05" length="0.02"/>
-        </geometry>
-      </collision>
-      <inertial>
-        <mass value="0.5"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="0.01" iyy="0.01" izz="0.01"
-                 ixy="0.0" ixz="0.0" iyz="0.0"/>
-      </inertial>
-    </link>
-
-    <joint name="${wheel_name}_joint" type="continuous">
-      <parent link="base_link"/>
-      <child link="${wheel_name}_link"/>
+<!-- wheel_macro.xacro -->
+<xacro:macro name="add_wheel" params="wheel_name xyz rpy mesh">
+  <link name="${wheel_name}_link">
+    <visual>
       <origin xyz="${xyz}" rpy="${rpy}"/>
-      <axis xyz="0 1 0"/>
-      <limit effort="5.0" velocity="10.0"/>
-    </joint>
-  </xacro:macro>
+      <geometry>
+        <mesh filename="${mesh}" scale="1 1 1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.02"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.5"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.01" iyy="0.01" izz="0.01"
+               ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
+  </link>
 
-</robot>
+  <joint name="${wheel_name}_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="${wheel_name}_link"/>
+    <origin xyz="${xyz}" rpy="${rpy}"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="5.0" velocity="10.0"/>
+  </joint>
+</xacro:macro>
