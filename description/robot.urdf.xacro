@@ -48,10 +48,10 @@
 
 
     <!-- Add 4 wheels -->
-  <xacro:add_wheel wheel_name="front_left_wheel"  xyz="0.3  0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
-  <xacro:add_wheel wheel_name="front_right_wheel" xyz="0.3 -0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
-  <xacro:add_wheel wheel_name="rear_left_wheel"   xyz="-0.3  0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
-  <xacro:add_wheel wheel_name="rear_right_wheel"  xyz="-0.3 -0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
+  <xacro:add_wheel wheel_name="front_left_wheel"  xyz="50  40  50" rpy="0 0 0" mesh="${wheel_mesh}"/>
+  <xacro:add_wheel wheel_name="front_right_wheel" xyz="50 -40  50" rpy="0 0 0" mesh="${wheel_mesh}"/>
+  <xacro:add_wheel wheel_name="rear_left_wheel"   xyz="-50  40  50" rpy="0 0 0" mesh="${wheel_mesh}"/>
+  <xacro:add_wheel wheel_name="rear_right_wheel"  xyz="-50 -40  50" rpy="0 0 0" mesh="${wheel_mesh}"/>
           
   
 
