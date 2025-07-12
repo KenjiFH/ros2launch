@@ -16,7 +16,8 @@
 
 
     <!-- Load wheel macro -->
-  <xacro:include filename="wheel_macro.xacro"/>
+  <xacro:include filename="$(find my_bot)/description/wheel_macro.xacro" />
+
 
   <!-- Define mesh path once -->
   <xacro:property name="wheel_mesh" value="package://my_bot/description/meshes/wheel.dae"/>
