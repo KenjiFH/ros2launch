@@ -41,7 +41,7 @@ def generate_launch_description():
     )
 
 
-    bridge_params = os.path.join(get_package_share_directory(package_name),'config','gz_bridge.yaml')
+    bridge_params = os.path.join(get_package_share_directory(pkg_path),'config','gz_bridge.yaml')
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
