@@ -58,7 +58,7 @@
 
 
 
-
+  <xacro:include filename="camera.xacro" />
   
 
    
