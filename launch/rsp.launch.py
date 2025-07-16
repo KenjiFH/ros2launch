@@ -14,7 +14,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time')
 
     # Process the URDF from xacro
-    pkg_path = get_package_share_directory('my_bot')  # change to your actual package name
+    pkg_path = get_package_share_directory('my_bot')  
     xacro_file = os.path.join(pkg_path, 'description', 'robot.urdf.xacro')
     robot_description_config = xacro.process_file(xacro_file)
 
@@ -41,7 +41,7 @@ def generate_launch_description():
     )
 
 
-    bridge_params = os.path.join(get_package_share_directory(pkg_path),'config','gz_bridge.yaml')
+    bridge_params = os.path.join(get_package_share_directory('my_bot'),'config','gz_bridge.yaml')
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
