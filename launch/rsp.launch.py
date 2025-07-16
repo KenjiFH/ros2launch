@@ -40,11 +40,31 @@ def generate_launch_description():
         arguments=['-d', rviz_config_file] if os.path.exists(rviz_config_file) else []
     )
 
+
+    bridge_params = os.path.join(get_package_share_directory(package_name),'config','gz_bridge.yaml')
+    ros_gz_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            '--ros-args',
+            '-p',
+            f'config_file:={bridge_params}',
+        ]
+    )
+
+    ros_gz_image_bridge = Node(
+        package="ros_gz_image",
+        executable="image_bridge",
+        arguments=["/camera/image_raw"]
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',
             description='Use simulation clock if true'),
         robot_state_publisher_node,
-        rviz_node
+        rviz_node,
+        ros_gz_bridge,
+        ros_gz_image_bridge
     ])
