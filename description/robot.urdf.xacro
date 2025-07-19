@@ -1,92 +1,109 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="my_robot">
-  
-  
-  <xacro:arg name="use_ros2_control" default="true"/>
-  <xacro:arg name="sim_mode" default="false"/>
-  
-  
-  
-  
-  <!-- Xacro Properties -->
-  <xacro:property name="body_mesh_file" value="package://my_bot/description/meshes/ATV_Chassis.dae"/> 
-  <xacro:property name="mesh_scale" value="1 1 1"/>
-  <xacro:property name="collision_box_size" value="0.4 0.3 0.2"/>
-  <xacro:property name="mass_kg" value="5.0"/>
-  <xacro:property name="ixx" value="0.2"/>
-  <xacro:property name="iyy" value="0.2"/>
-  <xacro:property name="izz" value="0.2"/>
+<robot name="atv_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:property name="wheel_radius" value="0.1"/>
-  <xacro:property name="wheel_width" value="0.05"/>
+  <!-- Xacro Includes -->
+  <xacro:include filename="robot.gazebo"/>
+  
+  <xacro:include filename="wheel_macro.xacro"/>
 
-  <xacro:include filename="camera.xacro" />
-
-    <!-- Load wheel macro -->
-  <xacro:include filename="wheel_macro.xacro" />
-
-  <!-- Define mesh path once -->
+  <!-- Mesh properties -->
+  <xacro:property name="body_mesh_file" value="package://my_bot/description/meshes/ATV_Chassis.dae"/>
   <xacro:property name="wheel_mesh" value="package://my_bot/description/meshes/Wheel.dae"/>
+  <xacro:property name="mesh_scale" value="1 1 1"/>
 
+  <!-- Frame root for SLAM/navigation -->
+  <link name="base_footprint"/>
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
 
+  <!-- Base Link using ATV chassis -->
   <link name="base_link">
+    <inertial>
+      <mass value="15.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.0625" ixy="0" ixz="0" iyy="0.2125" iyz="0" izz="0.25"/>
+    </inertial>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.4 0.3 0.2"/>
+      </geometry>
+    </collision>
+
     <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <mesh filename="${body_mesh_file}" scale="${mesh_scale}"/>
       </geometry>
     </visual>
-
-    <collision>
-      <geometry>
-        <box size="${collision_box_size}"/>
-      </geometry>
-    </collision>
-
-    <inertial>
-      <mass value="${mass_kg}"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia 
-        ixx="${ixx}" ixy="0.0" ixz="0.0"
-        iyy="${iyy}" iyz="0.0" 
-        izz="${izz}"/>
-    </inertial>
   </link>
 
-
-
-    <!-- Add 4 wheels -->
+  <!-- Wheels using macro (you must define the macro in wheel_macro.xacro) -->
   <xacro:add_wheel wheel_name="front_left_wheel"  xyz="0.3  0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
   <xacro:add_wheel wheel_name="front_right_wheel" xyz="0.3 -0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
   <xacro:add_wheel wheel_name="rear_left_wheel"   xyz="-0.3  0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
   <xacro:add_wheel wheel_name="rear_right_wheel"  xyz="-0.3 -0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
-          
-  
 
-
-
-
-  
-  
-
-   
-
-
-
-
-  
-
-  <!--REMOVE WHEN USING SLAM/NAVIGATION-->
-  <!-- Add a world link to anchor the robot -->
-  <link name="world"/>
-
-  <!-- Fixed joint from world to base_link -->
-  <joint name="base_fixed_joint" type="fixed">
-    <parent link="world"/>
-    <child link="base_link"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+  <!-- Camera -->
+  <joint type="fixed" name="camera_joint">
+    <origin xyz="0.225 0 0.075" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="camera_link"/>
   </joint>
 
+  <link name="camera_link">
+    <inertial>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+    <collision>
+      <geometry><box size="0.03 0.03 0.03"/></geometry>
+    </collision>
+    <visual>
+      <geometry><box size="0.03 0.03 0.03"/></geometry>
+    </visual>
+  </link>
+
+  <joint type="fixed" name="camera_optical_joint">
+    <origin xyz="0 0 0" rpy="-1.5707 0 -1.5707"/>
+    <parent link="camera_link"/>
+    <child link="camera_link_optical"/>
+  </joint>
+
+  <link name="camera_link_optical"/>
+
+  <!-- IMU -->
+  <joint name="imu_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+  </joint>
+  <link name="imu_link"/>
+
+  <!-- Lidar -->
+  <joint type="fixed" name="scan_joint">
+    <origin xyz="0.0 0 0.15" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="scan_link"/>
+  </joint>
+
+  <link name="scan_link">
+    <inertial>
+      <mass value="1e-5"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+    </inertial>
+    <collision>
+      <geometry><box size="0.1 0.1 0.1"/></geometry>
+    </collision>
+    <visual>
+      <geometry><mesh filename="package://bme_ros2_navigation/meshes/lidar.dae"/></geometry>
+    </visual>
+  </link>
+
 </robot>
-
-
-

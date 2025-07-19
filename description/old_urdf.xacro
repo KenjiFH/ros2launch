@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="my_robot">
+  
+  
+  <xacro:arg name="use_ros2_control" default="true"/>
+  <xacro:arg name="sim_mode" default="false"/>
+  
+  
+  
+  
+  <!-- Xacro Properties -->
+  <xacro:property name="body_mesh_file" value="package://my_bot/description/meshes/ATV_Chassis.dae"/> 
+  <xacro:property name="mesh_scale" value="1 1 1"/>
+  <xacro:property name="collision_box_size" value="0.4 0.3 0.2"/>
+  <xacro:property name="mass_kg" value="5.0"/>
+  <xacro:property name="ixx" value="0.2"/>
+  <xacro:property name="iyy" value="0.2"/>
+  <xacro:property name="izz" value="0.2"/>
+
+  <xacro:property name="wheel_radius" value="0.1"/>
+  <xacro:property name="wheel_width" value="0.05"/>
+
+  <xacro:include filename="camera.xacro" />
+
+    <!-- Load wheel macro -->
+  <xacro:include filename="wheel_macro.xacro" />
+
+  <!-- Define mesh path once -->
+  <xacro:property name="wheel_mesh" value="package://my_bot/description/meshes/Wheel.dae"/>
+
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <mesh filename="${body_mesh_file}" scale="${mesh_scale}"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="${collision_box_size}"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="${mass_kg}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia 
+        ixx="${ixx}" ixy="0.0" ixz="0.0"
+        iyy="${iyy}" iyz="0.0" 
+        izz="${izz}"/>
+    </inertial>
+  </link>
+
+
+
+    <!-- Add 4 wheels -->
+  <xacro:add_wheel wheel_name="front_left_wheel"  xyz="0.3  0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
+  <xacro:add_wheel wheel_name="front_right_wheel" xyz="0.3 -0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
+  <xacro:add_wheel wheel_name="rear_left_wheel"   xyz="-0.3  0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
+  <xacro:add_wheel wheel_name="rear_right_wheel"  xyz="-0.3 -0.2  0.05" rpy="0 0 0" mesh="${wheel_mesh}"/>
+          
+  
+
+
+
+
+  
+  
+
+   
+
+
+
+
+  
+
+  <!--REMOVE WHEN USING SLAM/NAVIGATION-->
+  <!-- Add a world link to anchor the robot -->
+  <link name="world"/>
+
+  <!-- Fixed joint from world to base_link -->
+  <joint name="base_fixed_joint" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+</robot>
+
+
+
