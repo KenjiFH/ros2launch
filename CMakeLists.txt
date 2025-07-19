@@ -33,8 +33,8 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY description/
-  DESTINATION share/${PROJECT_NAME}/description
+  DIRECTORY config description launch worlds
+  DESTINATION share/${PROJECT_NAME}
 )
 
 ament_package()
