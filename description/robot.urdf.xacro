@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="my_robot">
-
+  
+  
+  <xacro:arg name="use_ros2_control" default="true"/>
+  <xacro:arg name="sim_mode" default="false"/>
+  
+  
+  
+  
   <!-- Xacro Properties -->
   <xacro:property name="body_mesh_file" value="package://my_bot/description/meshes/ATV_Chassis.dae"/> 
   <xacro:property name="mesh_scale" value="1 1 1"/>

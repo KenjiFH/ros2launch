@@ -64,7 +64,7 @@ def generate_launch_description():
             default_value='false',
             description='Use simulation clock if true'),
         robot_state_publisher_node,
-        rviz_node,
-        ros_gz_bridge,
-        ros_gz_image_bridge
+        rviz_node
+        #ros_gz_bridge,
+        #ros_gz_image_bridge
     ])
